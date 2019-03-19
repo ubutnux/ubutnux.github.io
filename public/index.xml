@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ubutnux.gitlab.io on ubutnux.gitlab.io</title>
+    <link>https://ubutnux.gitlab.io/</link>
+    <description>Recent content in ubutnux.gitlab.io on ubutnux.gitlab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Prediksi Posisi Hilal dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-12-prediksi-hilal-dengan-python/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-12-prediksi-hilal-dengan-python/</guid>
+      <description>
+
+&lt;h1 id=&#34;impor-semua-paket-yang-dibutuhkan&#34;&gt;Impor semua paket yang dibutuhkan&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from skyfield import api
+from skyfield import almanac
+from skyfield.nutationlib import iau2000b
+from skyfield.units import Angle
+from datetime import timedelta
+
+import astropy.units as u
+
+from datetime import datetime
+from pytz import timezone
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Buat timescale dan unduh ephemeris. Kita akan menggunakan ephemeris dari JPL NASA versi de421.bsp.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;timescale = api.load.timescale()
+ephemeris = api.load(&#39;de421.bsp&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Tentukan koodinat di permukaan Bumi di mana prediksi akan dilakukan, sebagai contoh kita gunakan Observatorium Bosscha. Koodinat yang digunakan dalam derajat.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Observatorium Bosscha 107:37:00 BT; -6:49:50 LS
+longitude = 107 + 37/60
+latitude = -(6 + 49/60 + 50/3600)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Perhitungan posisi Bulan dan Matahari bergantung pada posisi pengamat di Bumi. Oleh karena itu kita perlu menentukan lokasi topografi Skyfield untuk koordinat di atas.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;bosschaTopo = api.Topos(longitude=longitude, latitude=latitude)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;waktu-matahari-dan-bulan-terbenam&#34;&gt;Waktu Matahari dan Bulan Terbenam&lt;/h1&gt;
+
+&lt;p&gt;Misalkan ingin menghitung waktu terbenam antara tanggal 5 April dan 6 April 2019.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;t1 = timescale.utc(2019, 4, 5, 0)
+t2 = timescale.utc(2019, 4, 6, 0)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Paket Skyfield telah menyediakan fungsi untuk menghitung waktu terbenam Matahari. Definisi matahari terbenam yang digunakan paket Skyfield sesuai dengan definisi Matahari terbenam dari USNO, yaitu ketika pusat piringan Matahari berada pada jarak zenit $90^o 50′$.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sunriset, sunBol = almanac.find_discrete(t1, t2, almanac.sunrise_sunset(ephemeris, bosschaTopo))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Hasilnya adalah sebuah array waktu, dan array boolean yang akan bernilai True jika matahari terbit dan bernilai False jika matahari terbenam.&lt;/p&gt;
+
+&lt;p&gt;Untuk menghitung waktu terbenam Bulan dengan definisi di atas kita dapat membuat fungsi sebagai berikut.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def moonrise_moonset(ephemeris, topos):
+    moon = ephemeris[&#39;moon&#39;]
+    topos_at = (ephemeris[&#39;earth&#39;] + topos).at
+
+    def is_moon_up_at(t):
+        t._nutation_angles = iau2000b(t.tt)
+        return topos_at(t).observe(moon).apparent().altaz()[0].degrees &amp;gt; -50/60
+
+    is_moon_up_at.rough_period = 0.5
+    return is_moon_up_at
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;moonriset, moonBol = almanac.find_discrete(t1, t2, moonrise_moonset(ephemeris, bosschaTopo))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Keluarannya akan mirip dengan format waktu terbenam Matahari.&lt;/p&gt;
+
+&lt;h3 id=&#34;waktu-terbenam-dalam-julian-date&#34;&gt;Waktu terbenam dalam Julian Date&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sunriset[~sunBol]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;Time tt=[2458578.95413447]&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;moonriset[~moonBol]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;Time tt=[2458578.96095373]&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;waktu-terbenam-dalam-standar-utc&#34;&gt;Waktu terbenam dalam standar UTC&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sunriset[~sunBol].utc_iso()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;[&#39;2019-04-05T10:52:48Z&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;moonriset[~moonBol].utc_iso()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;[&#39;2019-04-05T11:02:37Z&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;posisi-matahari-dan-bulan-saat-matahari-terbenam&#34;&gt;Posisi Matahari dan Bulan saat Matahari Terbenam&lt;/h1&gt;
+
+&lt;p&gt;Definisikan Bumi, Bulan, dan Matahari dari ephemeris di atas.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;earth = ephemeris[&#39;earth&#39;]
+sun = ephemeris[&#39;sun&#39;]
+moon = ephemeris[&#39;moon&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lokasi pengamat adalah posisi pusat Bumi ditambahkan posisi lokal topografi.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;bosscha = earth + bosschaTopo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;koordinat-ra-dan-dec-saat-matahari-terbenam&#34;&gt;Koordinat RA dan Dec saat Matahari terbenam&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sunradec = bosscha.at(sunriset[~sunBol]).observe(sun).apparent()
+moonradec = bosscha.at(sunriset[~sunBol]).observe(moon).apparent()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;RA dan Dec epoch saat itu.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;print(sunradec.radec(epoch=&#39;date&#39;))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;(&amp;lt;Angle 00h 56m 36.75s&amp;gt;, &amp;lt;Angle +06deg 03&#39; 05.6&amp;quot;&amp;gt;, &amp;lt;Distance [1.00036989] au&amp;gt;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;print(moonradec.radec(epoch=&#39;date&#39;))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;(&amp;lt;Angle 01h 04m 12.04s&amp;gt;, &amp;lt;Angle +01deg 56&#39; 37.8&amp;quot;&amp;gt;, &amp;lt;Distance [0.00265776] au&amp;gt;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;koordinat-dalam-altitud-dan-azimut&#34;&gt;Koordinat dalam Altitud dan Azimut&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;print(sunradec.altaz())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;(&amp;lt;Angle -00deg 49&#39; 59.9&amp;quot;&amp;gt;, &amp;lt;Angle 275deg 59&#39; 42.8&amp;quot;&amp;gt;, &amp;lt;Distance [1.00036989] au&amp;gt;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;print(moonradec.altaz())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;(&amp;lt;Angle 01deg 32&#39; 08.7&amp;quot;&amp;gt;, &amp;lt;Angle 272deg 08&#39; 33.2&amp;quot;&amp;gt;, &amp;lt;Distance [0.00265776] au&amp;gt;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;elongasi&#34;&gt;Elongasi&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sunradec.separation_from(moonradec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;Angle 04deg 31&#39; 21.0&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;fraksi-iluminasi-bulan-saat-matahari-terbenam&#34;&gt;Fraksi Iluminasi Bulan saat Matahari terbenam&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;almanac.fraction_illuminated(ephemeris, &#39;moon&#39;, sunriset[~sunBol])[0]*100
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;0.19602608000200417
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;waktu-konjungsi&#34;&gt;Waktu konjungsi&lt;/h2&gt;
+
+&lt;p&gt;Waktu konjungsi dapat ditentukan dengan mencari waktu saat fase bulan bernilai 0.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;t0 = timescale.utc(2019, 4, 4, 0)
+t1 = timescale.utc(2019, 4, 6, 0)
+t, y = almanac.find_discrete(t0, t1, almanac.moon_phases(ephemeris))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;t[y==0].utc_iso()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;[&#39;2019-04-05T08:50:29Z&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;fungsi&#34;&gt;Fungsi&lt;/h2&gt;
+
+&lt;p&gt;Untuk memudahkan menjalankan seluruh prosedur di atas, kita dapat membuat fungsi yang mencakup seluruh prosedur sekaligus membuat plot posisi Bulan dan Matahari.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;%matplotlib inline
+from matplotlib import pyplot as plt
+plt.style.use(&#39;ggplot&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;longitude = 107+37/60
+latitude = -(6+49/60+50/3600)
+bosschaTopo = api.Topos(longitude=longitude, latitude=latitude)
+
+def ucupkiyah(date, plot=False, day=0):
+    
+    wib = timezone(&#39;Asia/Jakarta&#39;)
+
+    date = wib.localize(date)
+    t0 = timescale.utc(date + timedelta(days=day))
+    
+    t1 = timescale.utc(t0.astimezone(wib) - timedelta(days=28))
+    t2 = timescale.utc(t0.astimezone(wib) + timedelta(days=28))
+    t, y = almanac.find_discrete(t1, t2, almanac.moon_phases(ephemeris))
+    
+    # t0 = t[y==0]
+    t1 = timescale.utc(t0.astimezone(wib) - timedelta(days=0))
+    t2 = timescale.utc(t0.astimezone(wib) + timedelta(days=1))
+    
+    sunriset, sunBol = almanac.find_discrete(t1, t2, almanac.sunrise_sunset(ephemeris, bosschaTopo))
+    moonriset, moonBol = almanac.find_discrete(t1, t2, moonrise_moonset(ephemeris, bosschaTopo))
+
+    sunset = sunriset[~sunBol].astimezone(wib)[0]
+    moonset = moonriset[~moonBol].astimezone(wib)[0]
+    
+    moonAge = sunriset[~sunBol] - t[y==0]
+    moonAge = moonAge[0]*24*3600
+    
+    lagTime = (moonriset[~moonBol][0]-sunriset[~sunBol][0])*24*3600
+    
+    earth = ephemeris[&#39;earth&#39;]
+    sun = ephemeris[&#39;sun&#39;]
+    moon = ephemeris[&#39;moon&#39;]
+
+    bosscha = earth + bosschaTopo
+    
+    sunradec = bosscha.at(sunriset[~sunBol]).observe(sun).apparent()
+    moonradec = bosscha.at(sunriset[~sunBol]).observe(moon).apparent()
+    
+    sunra, sundec, _ = sunradec.radec(epoch=&#39;date&#39;)
+    moonra, moondec, _ = moonradec.radec(epoch=&#39;date&#39;)
+    sunal, sunaz, _ = sunradec.altaz()
+    moonal, moonaz, _ = moonradec.altaz()
+    
+    relal = moonal.degrees[0] - sunal.degrees[0]
+    relaz = moonaz.degrees[0] - sunaz.degrees[0]
+        
+    elongation = sunradec.separation_from(moonradec)
+    illumination = almanac.fraction_illuminated(ephemeris, &#39;moon&#39;, sunriset[~sunBol])[0]*100
+
+    print(&#39;By the Name of Allah&#39;)
+    print(&#39;Ucupkiyah Calculator by Muhammad Yusuf&#39;)
+    print(&#39;&#39;)
+    
+    print(&#39;G. Conjunction Time\t : {}&#39;.format(t[y==0].astimezone(wib)[0]))
+    print(&#39;Sunset Time \t \t : {}&#39;.format(sunset))
+    print(&#39;Moonset Time \t \t : {}&#39;.format(moonset))
+    print(&#39;&#39;)
+    
+    print(&#39;G. Moon Age\t \t : {:02.0f}h {:02.0f}m {:02.2f}s&#39;.format(moonAge//3600, moonAge%3600//60, moonAge%60))
+    print(&#39;Lag Time \t \t : {:02.0f}h {:02.0f}m {:02.2f}s&#39;.format(lagTime//3600, lagTime%3600//60, lagTime%60)) 
+    print(&#39;&#39;)
+    
+    print(&#39;Sun RA \t \t \t : {}&#39;.format(sunra))
+    print(&#39;Moon RA \t \t : {}&#39;.format(moonra))
+    print(&#39;&#39;)
+    
+    print(&#39;Sun Dec \t \t : {}&#39;.format(sundec))
+    print(&#39;Moon Dec \t \t : {}&#39;.format(moondec))
+    print(&#39;&#39;)
+    
+    print(&#39;Sun Azimuth \t \t : {}&#39;.format(sunaz))
+    print(&#39;Moon Azimuth \t \t : {}&#39;.format(moonaz))
+    print(&#39;&#39;)
+    
+    print(&#39;Sun Altitude \t \t : {}&#39;.format(sunal))
+    print(&#39;Moon Altitude \t \t : {}&#39;.format(moonal))
+    print(&#39;&#39;)
+    
+    print(&#39;Relative Altitude \t : {}&#39;.format(Angle(degrees=relal).dstr()))
+    print(&#39;Relative Azimuth \t : {}&#39;.format(Angle(degrees=relaz).dstr()))
+    print(&#39;&#39;)
+    
+    print(&#39;Moon Elongation \t : {}&#39;.format(elongation))
+    print(&#39;Moon Illumination \t : {:02.2f}%&#39;.format(illumination))
+    
+    if plot:
+        lingkaranMatahari = plt.Circle((sunaz.to(u.deg)[0].value, sunal.to(u.deg)[0].value), 
+                        (0.5*u.deg).value,
+                        fc=&#39;yellow&#39;)
+        lingkaranBulan = plt.Circle((moonaz.to(u.deg)[0].value, moonal.to(u.deg)[0].value), 
+                                 (0.5*u.deg).value,
+                                 fc=&#39;black&#39;, alpha=.5)
+        plt.figure(figsize=(15, 15))
+        ax = plt.subplot(aspect=1)
+        ax.add_patch(lingkaranMatahari)
+        ax.add_patch(lingkaranBulan)
+        if sunaz.to(u.deg)[0] &amp;lt;= moonaz.to(u.deg)[0]:
+            xlimlow = sunaz.to(u.deg)[0].value
+            xlimhigh = moonaz.to(u.deg)[0].value
+        else:
+            xlimlow = moonaz.to(u.deg)[0].value
+            xlimhigh = sunaz.to(u.deg)[0].value
+
+        if sunal.to(u.deg)[0] &amp;lt;= moonal.to(u.deg)[0]:
+            ylimlow = sunal.to(u.deg)[0].value
+            ylimhigh = moonal.to(u.deg)[0].value
+        else:
+            ylimlow = moonal.to(u.deg)[0].value
+            ylimhigh = sunal.to(u.deg)[0].value
+
+        plt.xlim(xlimlow-2, xlimhigh+2)
+        plt.ylim(ylimlow-2, ylimhigh+2)
+        plt.text(sunaz.to(u.deg)[0].value-0.28, sunal.to(u.deg)[0].value-0.05, &#39;Matahari&#39;, fontsize=15)
+        plt.text(moonaz.to(u.deg)[0].value-0.2, moonal.to(u.deg)[0].value-0.05, &#39;Bulan&#39;, fontsize=15, color=&#39;white&#39;)
+        plt.axhline(y=0)
+
+        plt.plot([moonaz.to(u.deg)[0].value, sunaz.to(u.deg)[0].value], 
+                 [moonal.to(u.deg)[0].value, moonal.to(u.deg)[0].value],
+                 label=&#39;$\Delta$ Azimut = {}&#39;.format(Angle(degrees=relaz).dstr()))
+        plt.plot([sunaz.to(u.deg)[0].value, sunaz.to(u.deg)[0].value],
+                 [moonal.to(u.deg)[0].value, sunal.to(u.deg)[0].value],
+                 label=&#39;$\Delta$ Altitud = {}&#39;.format(Angle(degrees=relal).dstr()))
+        plt.plot([moonaz.to(u.deg)[0].value, sunaz.to(u.deg)[0].value], 
+                 [moonal.to(u.deg)[0].value, sunal.to(u.deg)[0].value],
+                 label=&#39;Elongasi = {}&#39;.format(elongation))
+
+
+        plt.xlabel(&#39;Azimut (derajat)&#39;)
+        plt.ylabel(&#39;Altitud (derajat)&#39;)
+        plt.legend()
+        plt.title(sunset)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;prediksi-hilal&#34;&gt;Prediksi Hilal&lt;/h2&gt;
+
+&lt;h3 id=&#34;syaban-1440h&#34;&gt;Syaban 1440H&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;ucupkiyah(datetime(2019, 4, 5), True)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;
+&lt;span class=&#39;nocode&#39;&gt;
+By the Name of Allah
+Ucupkiyah Calculator by Muhammad Yusuf
+
+G. Conjunction Time  : 2019-04-05 15:50:28.624000+07:00
+Sunset Time          : 2019-04-05 17:52:48.034000+07:00
+Moonset Time         : 2019-04-05 18:02:37.218000+07:00
+
+G. Moon Age      : 02h 02m 19.41s
+Lag Time         : 00h 09m 49.18s
+
+Sun RA           : 00h 56m 36.75s
+Moon RA          : 01h 04m 12.04s
+
+Sun Dec          : +06deg 03&#39; 05.6&#34;
+Moon Dec         : +01deg 56&#39; 37.8&#34;
+
+Sun Azimuth          : 275deg 59&#39; 42.8&#34;
+Moon Azimuth         : 272deg 08&#39; 33.2&#34;
+
+Sun Altitude         : -00deg 49&#39; 59.9&#34;
+Moon Altitude        : 01deg 32&#39; 08.7&#34;
+
+Relative Altitude    : 02deg 22&#39; 08.6&#34;
+Relative Azimuth     : -03deg 51&#39; 09.6&#34;
+
+Moon Elongation      : 04deg 31&#39; 21.0&#34;
+Moon Illumination    : 0.20%
+&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_50_1.png&#34; alt=&#34;Simulasi Hilal Sya&#39;ban 1440H&#34; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;ramadhan-1440h&#34;&gt;Ramadhan 1440H&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;ucupkiyah(datetime(2019, 5, 5), True, 0)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;span class=&#39;nocode&#39;&gt;
+By the Name of Allah
+Ucupkiyah Calculator by Muhammad Yusuf
+
+G. Conjunction Time  : 2019-05-05 05:45:29.812000+07:00
+Sunset Time          : 2019-05-05 17:41:46.344000+07:00
+Moonset Time         : 2019-05-05 18:08:49.400000+07:00
+
+G. Moon Age      : 11h 56m 16.53s
+Lag Time         : 00h 27m 3.06s
+
+Sun RA           : 02h 48m 47.59s
+Moon RA          : 03h 13m 50.25s
+
+Sun Dec          : +16deg 14&#39; 05.4&#34;
+Moon Dec         : +13deg 52&#39; 39.4&#34;
+
+Sun Azimuth          : 286deg 15&#39; 06.9&#34;
+Moon Azimuth         : 284deg 43&#39; 23.0&#34;
+
+Sun Altitude         : -00deg 49&#39; 59.9&#34;
+Moon Altitude        : 05deg 28&#39; 23.6&#34;
+
+Relative Altitude    : 06deg 18&#39; 23.5&#34;
+Relative Azimuth     : -01deg 31&#39; 43.9&#34;
+
+Moon Elongation      : 06deg 29&#39; 19.4&#34;
+Moon Illumination    : 0.42%
+&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_52_1.png&#34; alt=&#34;Simulasi Kondisi Hilal Ramadhan 1440H&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;syawal-1440h&#34;&gt;Syawal 1440H&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;ucupkiyah(datetime(2019, 6, 3), True, 0)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;span class=&#39;nocode&#39;&gt;
+By the Name of Allah
+Ucupkiyah Calculator by Muhammad Yusuf
+
+G. Conjunction Time  : 2019-06-03 17:01:56.654000+07:00
+Sunset Time          : 2019-06-03 17:40:01.059000+07:00
+Moonset Time         : 2019-06-03 17:40:28.707000+07:00
+
+G. Moon Age      : 00h 38m 4.40s
+Lag Time         : 00h 00m 27.65s
+
+Sun RA           : 04h 44m 30.26s
+Moon RA          : 04h 43m 28.73s
+
+Sun Dec          : +22deg 18&#39; 09.4&#34;
+Moon Dec         : +19deg 30&#39; 21.5&#34;
+
+Sun Azimuth          : 292deg 21&#39; 54.8&#34;
+Moon Azimuth         : 289deg 33&#39; 36.1&#34;
+
+Sun Altitude         : -00deg 49&#39; 59.9&#34;
+Moon Altitude        : -00deg 43&#39; 46.0&#34;
+
+Relative Altitude    : 00deg 06&#39; 13.9&#34;
+Relative Azimuth     : -02deg 48&#39; 18.8&#34;
+
+Moon Elongation      : 02deg 48&#39; 24.7&#34;
+Moon Illumination    : 0.07%
+&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_54_1.png&#34; alt=&#34;Simulasi Kondisi Hilal Syawal 1440H&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;jupyter-notebook&#34;&gt;Jupyter Notebook&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/ubutnux/riset-hilal/blob/master/ucupkiyah-calculator.ipynb&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;Github&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/ubutnux/riset-hilal/blob/master/ucupkiyah-calculator.ipynb&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;Gitlab&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prediksi Waktu Matahari dan Bulan Terbenam dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-11-prediksi-terbenam-dengan-python/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-11-prediksi-terbenam-dengan-python/</guid>
+      <description>
+
+&lt;h2 id=&#34;impor-semua-paket-yang-dibutuhkan&#34;&gt;Impor semua paket yang dibutuhkan&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from skyfield import api
+from skyfield import almanac
+from skyfield.nutationlib import iau2000b
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Buat &lt;em&gt;timescale&lt;/em&gt; dan unduh &lt;em&gt;ephemeris&lt;/em&gt;. Kita akan menggunakan &lt;em&gt;ephemeris&lt;/em&gt; dari JPL NASA versi &lt;em&gt;de421.bsp&lt;/em&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;timescale = api.load.timescale()
+ephemeris = api.load(&#39;de421.bsp&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Tentukan koodinat di permukaan Bumi di mana prediksi akan dilakukan, sebagai contoh kita gunakan Observatorium Bosscha. Koodinat yang digunakan dalam derajat.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Observatorium Bosscha 107:37:00 BT; -6:49:50 LS
+longitude = 107 + 37/60
+latitude = -(6 + 49/60 + 50/3600)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Perhitungan posisi Bulan dan Matahari bergantung pada posisi pengamat di Bumi. Oleh karena itu kita perlu menentukan lokasi topografi &lt;em&gt;Skyfield&lt;/em&gt; untuk koordinat di atas.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;bosschaTopo = api.Topos(longitude=longitude, latitude=latitude)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;waktu-terbenam-matahari-dan-bulan&#34;&gt;Waktu Terbenam Matahari dan Bulan&lt;/h2&gt;
+
+&lt;p&gt;Misalkan ingin menghitung waktu terbenam antara tanggal 5 April dan 6 April 2019.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;t1 = timescale.utc(2019, 4, 5, 0)
+t2 = timescale.utc(2019, 4, 6, 0)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Paket &lt;em&gt;Skyfield&lt;/em&gt; telah menyediakan fungsi untuk menghitung waktu terbenam Matahari. Definisi matahari terbenam yang digunakan paket &lt;em&gt;Skyfield&lt;/em&gt; sesuai dengan definisi Matahari terbenam dari USNO, yaitu ketika pusat piringan Matahari berada pada jarak zenit $90^o 50&amp;rsquo;$.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sunriset, sunBol = almanac.find_discrete(t1, t2, almanac.sunrise_sunset(ephemeris, bosschaTopo))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Hasilnya adalah sebuah &lt;em&gt;array&lt;/em&gt; waktu, dan &lt;em&gt;array boolean&lt;/em&gt; yang akan bernilai &lt;em&gt;True&lt;/em&gt; jika matahari terbit dan bernilai &lt;em&gt;False&lt;/em&gt; jika matahari terbenam.&lt;/p&gt;
+
+&lt;p&gt;Untuk menghitung waktu terbenam Bulan dengan definisi di atas kita dapat membuat fungsi sebagai berikut.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def moonrise_moonset(ephemeris, topos):
+    moon = ephemeris[&#39;moon&#39;]
+    topos_at = (ephemeris[&#39;earth&#39;] + topos).at
+
+    def is_moon_up_at(t):
+        t._nutation_angles = iau2000b(t.tt)
+        return topos_at(t).observe(moon).apparent().altaz()[0].degrees &amp;gt; -50/60
+
+    is_moon_up_at.rough_period = 0.5 
+    return is_moon_up_at
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;moonriset, moonBol = almanac.find_discrete(t1, t2, moonrise_moonset(ephemeris, bosschaTopo))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Keluarannya akan mirip dengan format waktu terbenam Matahari.&lt;/p&gt;
+
+&lt;h3 id=&#34;waktu-terbenam-dalam-julian-date&#34;&gt;Waktu terbenam dalam Julian Date&lt;/h3&gt;
+
+&lt;p&gt;Waktu terbenam Matahari:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sunriset[~sunBol]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;waktu terbenam Bulan&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;moonriset[~moonBol]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;waktu-terbenam-dalam-standar-utc&#34;&gt;Waktu terbenam dalam standar UTC&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;print(sunriset[~sunBol].utc_iso())
+print(moonriset[~moonBol].utc_iso())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;[&#39;2019-04-05T10:52:48Z&#39;]
+[&#39;2019-04-05T11:02:37Z&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;jupyter-notebook&#34;&gt;Jupyter Notebook&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/ubutnux/riset-hilal/blob/master/Waktu%20Terbenam.ipynb&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;Github&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/ubutnux/riset-hilal/blob/master/Waktu%20Terbenam.ipynb&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;Gitlab&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prediksi Gerhana Matahari Cincin 2019 Indonesia dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/</guid>
+      <description>
+
+&lt;p&gt;Mari kita coba memprediksi waktu dan peristiwa gerhana matahari cincin Indonesia 2019 dengan menggunakan paket astropy.&lt;/p&gt;
+
+&lt;h2 id=&#34;impor-semua-paket-yang-dibutuhkan&#34;&gt;Impor semua paket yang dibutuhkan&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import numpy as np
+
+import pytz
+import datetime
+
+from astropy import units as u
+from astropy.time import Time
+from astropy.coordinates import EarthLocation, AltAz, get_sun, get_moon
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;%matplotlib inline
+from matplotlib import pyplot as plt
+plt.style.use(&#39;ggplot&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;prediksi-untuk-daerah-siak-riau&#34;&gt;Prediksi untuk daerah Siak, RIAU&lt;/h2&gt;
+
+&lt;p&gt;Misalkan akan melakukan pengamatan di Siak, Riau. Dari kabar burung, gerhana akan terjadi pada tanggal 26 Desember 2019 pukul 12:10 WIB. Mari kita coba hitung.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;siak = EarthLocation.of_address(&#39;istana siak&#39;)
+tz = pytz.timezone(&#39;Asia/Jakarta&#39;)
+waktu_tebakan = Time(tz.localize(datetime.datetime(2019,12, 26, 12, 10, 0)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Buat objek bulan dan matahari untuk lokasi dan waktu di atas&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;altAzframe = AltAz(obstime=waktu_tebakan, location=siak)
+
+matahariAltAz = get_sun(waktu_tebakan).transform_to(altAzframe)
+bulanAltAz = get_moon(waktu_tebakan).transform_to(altAzframe)
+
+separasi = matahariAltAz.separation(bulanAltAz).to(u.arcmin)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Jarak pisah (separasi) Matahari dan Bulan $ = 3.86178\mathrm{{}^{\prime}}$. Mari kita hitung ukuran diameter sudut Matahari dan Bulan. Di dalam paket astropy sudah ada radius Matahari, tapi kita harus tetap menghitung ukuran diameter sudut bulan. Di laman &lt;a href=&#34;https://en.wikipedia.org/wiki/Moon&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;Wikipedia&lt;/a&gt; kita bisa menghitung radius rata-rata Bulan.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from astropy import constants
+
+R_matahari = constants.R_sun
+R_bulan = 1737.1 * u.km
+
+def ukuran_tampak(R, jarak):
+    return (R/jarak).to(u.arcmin, u.dimensionless_angles())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;ukuranMatahari = ukuran_tampak(R_matahari, matahariAltAz.distance)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ukuran tampak Matahari $ = 16.256114 \; \mathrm{{}^{\prime}}$.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;ukuranBulan = ukuran_tampak(R_bulan, bulanAltAz.distance)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ukuran tampak Bulan $ = 15.780461 \; \mathrm{{}^{\prime}}$Plot posisi bulan dan matahari untuk lokasi dan waktu di atas&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;lingkaranMatahari = plt.Circle((matahariAltAz.az.deg, matahariAltAz.alt.deg), 
+                        ukuranMatahari.to(u.deg).value,
+                        fc=&#39;yellow&#39;)
+lingkaranBulan = plt.Circle((bulanAltAz.az.deg, bulanAltAz.alt.deg), 
+                         ukuranBulan.to(u.deg).value,
+                         fc=&#39;black&#39;, alpha=.5)
+
+ax = plt.subplot(aspect=1)
+ax.add_patch(lingkaranMatahari)
+ax.add_patch(lingkaranBulan)
+jarakTerbesar = max(separasi.deg, ukuranMatahari.to(u.deg).value, ukuranBulan.to(u.deg).value)
+plt.xlim(matahariAltAz.az.deg-jarakTerbesar*1.2, bulanAltAz.az.deg+jarakTerbesar*1.2)
+plt.ylim(matahariAltAz.alt.deg-jarakTerbesar*1.2, bulanAltAz.alt.deg+jarakTerbesar*1.2)
+
+plt.xlabel(&#39;Azimut (derajat)&#39;)
+plt.ylabel(&#39;Altitud (derajat)&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_13_0.png&#34; alt=&#34;Posisi Matahari dan Bulan di Siak pada pukul 12:10 WIB.&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Plot di atas menunjukkan terjadinya gerhana sebagian. Sepertinya kabar burung yang sampai kurang akurat. Mari kita menghitung jarak sudut antara Matahari dan Bulan di sekitar waktu yang kita dengar. Untuk memudahkan mari kita membuat fungsi untuk menghitung posisi bulan dan matahari dan jarak separasi satu sama lain.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def matahariBulan(waktu, lokasi):
+    altAzframe = AltAz(obstime=waktu, location=lokasi)
+    matahariAltAz = get_sun(waktu).transform_to(altAzframe)
+    bulanAltAz = get_moon(waktu).transform_to(altAzframe)
+    separasi = matahariAltAz.separation(bulanAltAz)
+    
+    return separasi, matahariAltAz, bulanAltAz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Kemudian coba kita plot jarak sudut Matahari dan Bulan untuk rentang waktu 100 menit sebelum dan sesudah pukul 12:10 WIB.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;rentangWaktu = waktu_tebakan + np.linspace(-100, 100, 1000)*u.min
+
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, siak)
+
+plt.figure(figsize=(15, 10))
+plt.plot_date(rentangWaktu.plot_date, separasi.arcmin, fmt=&#39;-&#39;)
+plt.axvline(waktu_tebakan.plot_date, c=&#39;k&#39;, ls=&#39;--&#39;)
+plt.ylabel(&#39;Jarak Sudut Bulan dan Matahari (menit busur)&#39;)
+plt.xlabel(&#39;Waktu(UTC)&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_17_1.png&#34; alt=&#34;Jarak sudut Matahari dan Bulan di Siak terhadap waktu.&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Dari grafik di atas perkiraan waktu dari kabar burung meleset sekitar 15 menit. Kita dapat mencari minimum dari grafik di atas untuk menentukan momen puncak peristiwa gerhana.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;puncakGerhana = rentangWaktu[np.argmin(matahariAltAz.separation(bulanAltAz).arcmin)]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;    &amp;lt;Time object: scale=&#39;utc&#39; format=&#39;datetime&#39; value=2019-12-26 05:24:18.858859&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Puncak peristiwa gerhana untuk daerah di Siak adalah pukul 05:24 UTC. Mari kita plot lagi posisi Bulan dan Matahari pada waktu tersebut.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;separasi, matahariAltAz, bulanAltAz = matahariBulan(puncakGerhana, siak)
+
+lingkaranMatahari = plt.Circle((matahariAltAz.az.deg, matahariAltAz.alt.deg), 
+                        ukuranMatahari.to(u.deg).value,
+                        fc=&#39;yellow&#39;)
+lingkaranBulan = plt.Circle((bulanAltAz.az.deg, bulanAltAz.alt.deg), 
+                         ukuranBulan.to(u.deg).value,
+                         fc=&#39;black&#39;, alpha=.5)
+
+ax = plt.subplot(aspect=1)
+ax.add_patch(lingkaranMatahari)
+ax.add_patch(lingkaranBulan)
+jarakTerbesar = max(separasi.deg, ukuranMatahari.to(u.deg).value, ukuranBulan.to(u.deg).value)
+plt.xlim(matahariAltAz.az.deg-jarakTerbesar*1.2, matahariAltAz.az.deg+jarakTerbesar*1.2)
+plt.ylim(matahariAltAz.alt.deg-jarakTerbesar*1.2, matahariAltAz.alt.deg+jarakTerbesar*1.2)
+
+plt.xlabel(&#39;Azimut (derajat)&#39;)
+plt.ylabel(&#39;Altitud (derajat)&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_21_1.png&#34; alt=&#34;Posisi Matahari dan Bulan di Siak pada pukul 12:24 WIB&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Yay!!!!!! Ternyata di daerah tersebut memang terjadi gerhana matahari cincin, tapi bulannya tidak tepat di tengah matahari. Mari kita cari lokasi lain.&lt;/p&gt;
+
+&lt;h2 id=&#34;pulau-penyengat&#34;&gt;Pulau Penyengat&lt;/h2&gt;
+
+&lt;p&gt;Menurut Bu Wiwin, ada pulau yang sudah disurvei dan akan dilewati puncak gerhana. Mari kita hitung dengan menggunakan cara yang sama.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;penyengat  = EarthLocation.of_address(&#39;pulau penyengat&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;penyengat  = EarthLocation.of_address(&#39;pulau penyengat&#39;)
+rentangWaktu = waktu_tebakan + np.linspace(-100, 100, 1000)*u.min
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, penyengat)
+
+puncakGerhana = rentangWaktu[np.argmin(matahariAltAz.separation(bulanAltAz).arcmin)]
+separasi, matahariAltAz, bulanAltAz = matahariBulan(puncakGerhana, penyengat)
+
+lingkaranMatahari = plt.Circle((matahariAltAz.az.deg, matahariAltAz.alt.deg), 
+                        ukuranMatahari.to(u.deg).value,
+                        fc=&#39;yellow&#39;)
+lingkaranBulan = plt.Circle((bulanAltAz.az.deg, bulanAltAz.alt.deg), 
+                         ukuranBulan.to(u.deg).value,
+                         fc=&#39;black&#39;, alpha=.5)
+
+ax = plt.subplot(aspect=1)
+ax.add_patch(lingkaranMatahari)
+ax.add_patch(lingkaranBulan)
+jarakTerbesar = max(separasi.deg, ukuranMatahari.to(u.deg).value, ukuranBulan.to(u.deg).value)
+plt.xlim(matahariAltAz.az.deg-jarakTerbesar*1.2, matahariAltAz.az.deg+jarakTerbesar*1.2)
+plt.ylim(matahariAltAz.alt.deg-jarakTerbesar*1.2, matahariAltAz.alt.deg+jarakTerbesar*1.2)
+
+plt.xlabel(&#39;Azimut (derajat)&#39;)
+plt.ylabel(&#39;Altitud (derajat)&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_26_1.png&#34; alt=&#34;Posisi Bulan dan Matahari pada peristiwa puncak gerhana di Pulau Siak&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Pas!!! Pulau penyengat dapat gambar cincin ketika puncak gerhana. Mari mencari waktu awal dan akhir peristiwa gerhana matahari cincin pada lokasi ini.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;rentangWaktu = puncakGerhana + np.linspace(-60, 60, 100)*u.min
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, penyengat)
+waktu_tebakan = rentangWaktu[np.argmin(separasi)]
+rentangWaktu = waktu_tebakan + np.linspace(-5, 5, 500)*u.min
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, penyengat)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sep = separasi
+puncakGerhana = rentangWaktu[np.argmin(matahariAltAz.separation(bulanAltAz).arcmin)]
+
+ukuranBulan = ukuran_tampak(R_bulan, bulanAltAz.distance)
+ukuraMatahari = ukuran_tampak(R_matahari, matahariAltAz.distance)
+
+cincin = sep &amp;lt; (ukuranMatahari - ukuranBulan)
+sebagian = sep &amp;lt; (ukuranMatahari + ukuranBulan)
+
+plt.figure(figsize=(10, 8))
+plt.axvline(puncakGerhana.plot_date, c=&#39;k&#39;, ls=&#39;--&#39;)
+plt.axvspan(rentangWaktu.plot_date[cincin].min(), rentangWaktu.plot_date[cincin].max(), color=&#39;red&#39;, alpha=0.3)
+plt.plot_date(rentangWaktu.plot_date, sep.arcmin, fmt=&#39;-&#39;, c=&#39;k&#39;)
+plt.plot_date(rentangWaktu.plot_date[sebagian], sep.arcmin[sebagian], fmt=&#39;-&#39;)
+plt.plot_date(rentangWaktu.plot_date[cincin], sep.arcmin[cincin], fmt=&#39;-&#39;, color=&#39;white&#39;)
+plt.text(rentangWaktu.plot_date[cincin].min()-0.0008, 0.4, np.min(rentangWaktu[cincin]).strftime(&#39;%H:%M:%S&#39;))
+plt.text(rentangWaktu.plot_date[cincin].max()+0.0001, 0.4, np.max(rentangWaktu[cincin]).strftime(&#39;%H:%M:%S&#39;))
+plt.text(puncakGerhana.plot_date-0.0003, 0.05, puncakGerhana.strftime(&#39;%H:%M:%S&#39;))
+plt.ylabel(&#39;Jarak Sudut Bulan dan Matahari (menit busur)&#39;)
+plt.xlabel(&#39;Waktu (UTC)&#39;)
+plt.ylim(0, sep.arcmin[-1])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_31_1.png&#34; alt=&#34;Jarak sudut Matahari dan Bulan untuk pulau Penyengat&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Daerah yang diarsir adalah waktu ketika terjadi fase gerhana matahari cincin. Berapa lama durasi fase gerhana cincin tersebut?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;(np.max(rentangWaktu[cincin])-np.min(rentangWaktu[cincin])).to(u.min)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Dari perhitungan, durasinya adalah $ = 3.4268537$ menit.&lt;/p&gt;
+
+&lt;h2 id=&#34;observatorium-bosscha-lembang&#34;&gt;Observatorium Bosscha, Lembang&lt;/h2&gt;
+
+&lt;p&gt;Bagaimana dengan Observatorium Bosscha di Lembang?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;bosscha = EarthLocation.of_address(&#39;Bosscha Observatory&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;rentangWaktu = puncakGerhana + np.linspace(-120, 120, 100)*u.min
+
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, bosscha)
+
+plt.figure(figsize=(15, 10))
+plt.plot_date(rentangWaktu.plot_date, separasi.arcmin, fmt=&#39;-&#39;)
+plt.axvline(waktu_tebakan.plot_date, c=&#39;k&#39;, ls=&#39;--&#39;)
+plt.ylabel(&#39;Jarak Sudut Bulan dan Matahari (menit busur)&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_38_0.png&#34; alt=&#34;Jarak sudut Matahari dan Bulan di Observatorium Bosscha&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Apakah akan terjadi gerhana matahari cincin di waktu puncak gerhana di Observatorium Bosscha?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;waktu_tebakan = rentangWaktu[np.argmin(separasi)]
+rentangWaktu = waktu_tebakan + np.linspace(-5, 5, 500)*u.min
+separasi = matahariBulan(rentangWaktu, bosscha)[0]
+puncakGerhana = rentangWaktu[np.argmin(separasi)]
+
+separasi, matahariAltAz, bulanAltAz = matahariBulan(puncakGerhana, bosscha)
+
+ukuraMatahari = ukuran_tampak(R_matahari, matahariAltAz.distance)
+ukuranBulan = ukuran_tampak(R_bulan, bulanAltAz.distance)
+
+lingkaranMatahari = plt.Circle((matahariAltAz.az.deg, matahariAltAz.alt.deg), 
+                        ukuranMatahari.to(u.deg).value,
+                        fc=&#39;yellow&#39;)
+lingkaranBulan = plt.Circle((bulanAltAz.az.deg, bulanAltAz.alt.deg), 
+                         ukuranBulan.to(u.deg).value,
+                         fc=&#39;black&#39;, alpha=.5)
+
+ax = plt.subplot(aspect=1)
+ax.add_patch(lingkaranMatahari)
+ax.add_patch(lingkaranBulan)
+jarakTerbesar = max(separasi.deg, ukuranMatahari.to(u.deg).value, ukuranBulan.to(u.deg).value)
+plt.xlim(matahariAltAz.az.deg-jarakTerbesar*1.2, bulanAltAz.az.deg+jarakTerbesar*1.2)
+plt.ylim(matahariAltAz.alt.deg-jarakTerbesar*1.2, bulanAltAz.alt.deg+jarakTerbesar*1.2)
+
+plt.xlabel(&#39;Azimut (derajat)&#39;)
+plt.ylabel(&#39;Altitud (derajat)&#39;)
+
+maxdt = pytz.utc.localize(puncakGerhana.datetime).astimezone(tz)
+
+plt.title(&#39;{0:%H}:{0:%M}:{0:%S} {1}&#39;.format(maxdt, maxdt.tzinfo.tzname(maxdt)));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_40_0.png&#34; alt=&#34;Posisi Matahari dan Bulan pada fase puncak di Observatorium Bosscha&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Sayang sekali ternyata Observatorium Bosscha hanya dapat mengamati gerhana matahari sebagian.&lt;/p&gt;
+
+&lt;p&gt;Di Observatorium Bosscha banyak pohon. Apakah ketika puncak gerhana sebagian terjadi medan pandang kita tidak terhalang pohon? Asumsi tinggi rata-rata pohon 30 meter.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;30*u.m/np.tan(matahariAltAz.alt)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Jarak minimum = $11.204875 \; \mathrm{m}$. Selama pengamat berjarak 12 meter dari pohon, pandangan akan bebas.&lt;/p&gt;
+
+&lt;p&gt;Metode di atas dapat digunakan untuk memprediksi peristiwa gerhana di daerah dan waktu yang lain. Happy coding.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Terinspirasi dari &lt;a href=&#34;https://gist.github.com/eteq/f879c2fe69d75d1c5a9e007b0adce30d&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;hitungan&lt;/a&gt; gerhana matahari puncak di Amerika tahun 2017 oleh &lt;a href=&#34;https://github.com/eteq&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;Erik Tollerud&lt;/a&gt; si empunya proyek astropy.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://ubutnux.gitlab.io/about/</link>
+      <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/about/</guid>
+      <description>
+
+&lt;p&gt;Astronom di Observatorium Bosscha&lt;/p&gt;
+
+&lt;h2 id=&#34;presentasi-terakhir&#34;&gt;Presentasi Terakhir&lt;/h2&gt;
+
+&lt;h3 id=&#34;2019&#34;&gt;2019&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;April 2019: Kuliah Umum Program Studi Fisika, FST UNDANA. &lt;a href=&#34;https://ubutnux.github.io/pengamatan-exoplanet-presentasi&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;&lt;em&gt;Program Pengamatan Eksoplanet Observatorium Bosscha&lt;/em&gt;&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Maret 2019: Kolokium Program Studi Astronomi, ITB. &lt;a href=&#34;https://ubutnux.github.io/pengamatan-exoplanet-presentasi&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;&lt;em&gt;Program Pengamatan Eksoplanet Observatorium Bosscha&lt;/em&gt;&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Maret 2019: Sarasehan Hilal Rajab dan Preservasi Langit Gelap, Observatorium Bosscha. &lt;em&gt;Metode Pengamatan Hilal Observatorium Bosscha&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;2018&#34;&gt;2018&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Desember 2018: 90 tahun Teleskop Refraktor Ganda Zeiss, Observatorium Bosscha. &lt;em&gt;Pengamatan Bintang Ganda: Dulu, KINI, dan
+Mendatang&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

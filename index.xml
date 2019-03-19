@@ -373,7 +373,7 @@ Moon Illumination    : 0.20%
 &lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_50_1.png&#34; alt=&#34;Simulasi Hilal Sya&#39;ban 1440H&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_50_1.png&#34; alt=&#34;Simulasi Hilal Sya&#39;ban 1440H&#34; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;ramadhan-1440h&#34;&gt;Ramadhan 1440H&lt;/h1&gt;
 
@@ -410,7 +410,7 @@ Moon Elongation      : 06deg 29&#39; 19.4&#34;
 Moon Illumination    : 0.42%
 &lt;/span&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_52_1.png&#34; alt=&#34;Simulasi Kondisi Hilal Ramadhan 1440H&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_52_1.png&#34; alt=&#34;Simulasi Kondisi Hilal Ramadhan 1440H&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;syawal-1440h&#34;&gt;Syawal 1440H&lt;/h2&gt;
 
@@ -447,7 +447,7 @@ Moon Elongation      : 02deg 48&#39; 24.7&#34;
 Moon Illumination    : 0.07%
 &lt;/span&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_54_1.png&#34; alt=&#34;Simulasi Kondisi Hilal Syawal 1440H&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_54_1.png&#34; alt=&#34;Simulasi Kondisi Hilal Syawal 1440H&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;jupyter-notebook&#34;&gt;Jupyter Notebook&lt;/h2&gt;
 
@@ -641,7 +641,7 @@ plt.xlabel(&#39;Azimut (derajat)&#39;)
 plt.ylabel(&#39;Altitud (derajat)&#39;);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_13_0.png&#34; alt=&#34;Posisi Matahari dan Bulan di Siak pada pukul 12:10 WIB.&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_13_0.png&#34; alt=&#34;Posisi Matahari dan Bulan di Siak pada pukul 12:10 WIB.&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Plot di atas menunjukkan terjadinya gerhana sebagian. Sepertinya kabar burung yang sampai kurang akurat. Mari kita menghitung jarak sudut antara Matahari dan Bulan di sekitar waktu yang kita dengar. Untuk memudahkan mari kita membuat fungsi untuk menghitung posisi bulan dan matahari dan jarak separasi satu sama lain.&lt;/p&gt;
 
@@ -667,7 +667,7 @@ plt.ylabel(&#39;Jarak Sudut Bulan dan Matahari (menit busur)&#39;)
 plt.xlabel(&#39;Waktu(UTC)&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_17_1.png&#34; alt=&#34;Jarak sudut Matahari dan Bulan di Siak terhadap waktu.&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_17_1.png&#34; alt=&#34;Jarak sudut Matahari dan Bulan di Siak terhadap waktu.&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Dari grafik di atas perkiraan waktu dari kabar burung meleset sekitar 15 menit. Kita dapat mencari minimum dari grafik di atas untuk menentukan momen puncak peristiwa gerhana.&lt;/p&gt;
 
@@ -699,7 +699,7 @@ plt.xlabel(&#39;Azimut (derajat)&#39;)
 plt.ylabel(&#39;Altitud (derajat)&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_21_1.png&#34; alt=&#34;Posisi Matahari dan Bulan di Siak pada pukul 12:24 WIB&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_21_1.png&#34; alt=&#34;Posisi Matahari dan Bulan di Siak pada pukul 12:24 WIB&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Yay!!!!!! Ternyata di daerah tersebut memang terjadi gerhana matahari cincin, tapi bulannya tidak tepat di tengah matahari. Mari kita cari lokasi lain.&lt;/p&gt;
 
@@ -735,7 +735,7 @@ plt.xlabel(&#39;Azimut (derajat)&#39;)
 plt.ylabel(&#39;Altitud (derajat)&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_26_1.png&#34; alt=&#34;Posisi Bulan dan Matahari pada peristiwa puncak gerhana di Pulau Siak&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_26_1.png&#34; alt=&#34;Posisi Bulan dan Matahari pada peristiwa puncak gerhana di Pulau Siak&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Pas!!! Pulau penyengat dapat gambar cincin ketika puncak gerhana. Mari mencari waktu awal dan akhir peristiwa gerhana matahari cincin pada lokasi ini.&lt;/p&gt;
 
@@ -770,7 +770,7 @@ plt.xlabel(&#39;Waktu (UTC)&#39;)
 plt.ylim(0, sep.arcmin[-1])
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_31_1.png&#34; alt=&#34;Jarak sudut Matahari dan Bulan untuk pulau Penyengat&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_31_1.png&#34; alt=&#34;Jarak sudut Matahari dan Bulan untuk pulau Penyengat&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Daerah yang diarsir adalah waktu ketika terjadi fase gerhana matahari cincin. Berapa lama durasi fase gerhana cincin tersebut?&lt;/p&gt;
 
@@ -796,7 +796,7 @@ plt.axvline(waktu_tebakan.plot_date, c=&#39;k&#39;, ls=&#39;--&#39;)
 plt.ylabel(&#39;Jarak Sudut Bulan dan Matahari (menit busur)&#39;);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_38_0.png&#34; alt=&#34;Jarak sudut Matahari dan Bulan di Observatorium Bosscha&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_38_0.png&#34; alt=&#34;Jarak sudut Matahari dan Bulan di Observatorium Bosscha&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Apakah akan terjadi gerhana matahari cincin di waktu puncak gerhana di Observatorium Bosscha?&lt;/p&gt;
 
@@ -832,7 +832,7 @@ maxdt = pytz.utc.localize(puncakGerhana.datetime).astimezone(tz)
 plt.title(&#39;{0:%H}:{0:%M}:{0:%S} {1}&#39;.format(maxdt, maxdt.tzinfo.tzname(maxdt)));
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/output_40_0.png&#34; alt=&#34;Posisi Matahari dan Bulan pada fase puncak di Observatorium Bosscha&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ubutnux.gitlab.io/images/output_40_0.png&#34; alt=&#34;Posisi Matahari dan Bulan pada fase puncak di Observatorium Bosscha&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Sayang sekali ternyata Observatorium Bosscha hanya dapat mengamati gerhana matahari sebagian.&lt;/p&gt;
 

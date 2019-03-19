@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gmc2019 on ubutnux.gitlab.io</title>
+    <link>https://ubutnux.gitlab.io/tags/gmc2019/</link>
+    <description>Recent content in gmc2019 on ubutnux.gitlab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://ubutnux.gitlab.io/tags/gmc2019/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Prediksi Gerhana Matahari Cincin 2019 Indonesia dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/</guid>
+      <description>Mari kita coba memprediksi waktu dan peristiwa gerhana matahari cincin Indonesia 2019 dengan menggunakan paket astropy.
+Impor semua paket yang dibutuhkan import numpy as np import pytz import datetime from astropy import units as u from astropy.time import Time from astropy.coordinates import EarthLocation, AltAz, get_sun, get_moon  %matplotlib inline from matplotlib import pyplot as plt plt.style.use(&#39;ggplot&#39;)  Prediksi untuk daerah Siak, RIAU Misalkan akan melakukan pengamatan di Siak, Riau. Dari kabar burung, gerhana akan terjadi pada tanggal 26 Desember 2019 pukul 12:10 WIB.</description>
+    </item>
+    
+  </channel>
+</rss>

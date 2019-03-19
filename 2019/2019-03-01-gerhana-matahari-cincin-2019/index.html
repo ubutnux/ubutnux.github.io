@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Muhammad.Yusuf">
+  
+  
+  
+  
+  <link rel="next" href="https://ubutnux.gitlab.io/2019/2019-03-11-prediksi-terbenam-dengan-python/" />
+  <link rel="canonical" href="https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           Prediksi Gerhana Matahari Cincin 2019 Indonesia dengan Python | ubutnux.gitlab.io
+       
+  </title>
+  <meta name="title" content="Prediksi Gerhana Matahari Cincin 2019 Indonesia dengan Python | ubutnux.gitlab.io">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "https://ubutnux.gitlab.io"
+    },
+    "articleSection" : "posts",
+    "name" : "Prediksi Gerhana Matahari Cincin 2019 Indonesia dengan Python",
+    "headline" : "Prediksi Gerhana Matahari Cincin 2019 Indonesia dengan Python",
+    "description" : "Mari kita coba memprediksi waktu dan peristiwa gerhana matahari cincin Indonesia 2019 dengan menggunakan paket astropy.
+Impor semua paket yang dibutuhkan import numpy as np import pytz import datetime from astropy import units as u from astropy.time import Time from astropy.coordinates import EarthLocation, AltAz, get_sun, get_moon  %matplotlib inline from matplotlib import pyplot as plt plt.style.use('ggplot')  Prediksi untuk daerah Siak, RIAU Misalkan akan melakukan pengamatan di Siak, Riau. Dari kabar burung, gerhana akan terjadi pada tanggal 26 Desember 2019 pukul 12:10 WIB.",
+    "inLanguage" : "en-us",
+    "author" : "Muhammad.Yusuf",
+    "creator" : "Muhammad.Yusuf",
+    "publisher": "Muhammad.Yusuf",
+    "accountablePerson" : "Muhammad.Yusuf",
+    "copyrightHolder" : "Muhammad.Yusuf",
+    "copyrightYear" : "2019",
+    "datePublished": "2019-03-01 00:00:00 &#43;0000 UTC",
+    "dateModified" : "2019-03-01 00:00:00 &#43;0000 UTC",
+    "url" : "https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/",
+    "wordCount" : "920",
+    "keywords" : [ "python","astronomi","astropy","gerhana","gmc2019", "ubutnux.gitlab.io"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><span class="inline-svg" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M105.2 24.9c-3.1-8.9-15.7-8.9-18.9 0L29.8 199.7h132c-.1 0-56.6-174.8-56.6-174.8zM.9 287.7c-2.6 8 .3 16.9 7.1 22l247.9 184-226.2-294zm160.8-88l94.3 294 94.3-294zm349.4 88l-28.8-88-226.3 294 247.9-184c6.9-5.1 9.7-14 7.2-22zM425.7 24.9c-3.1-8.9-15.7-8.9-18.9 0l-56.6 174.8h132z"/></svg>
+</span>
+</a>&nbsp;<a href="https://ubutnux.gitlab.io">ubutnux.gitlab.io</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="About">About</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><span class="inline-svg" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M105.2 24.9c-3.1-8.9-15.7-8.9-18.9 0L29.8 199.7h132c-.1 0-56.6-174.8-56.6-174.8zM.9 287.7c-2.6 8 .3 16.9 7.1 22l247.9 184-226.2-294zm160.8-88l94.3 294 94.3-294zm349.4 88l-28.8-88-226.3 294 247.9-184c6.9-5.1 9.7-14 7.2-22zM425.7 24.9c-3.1-8.9-15.7-8.9-18.9 0l-56.6 174.8h132z"/></svg>
+</span>
+</a>&nbsp;<a href="https://ubutnux.gitlab.io">ubutnux.gitlab.io</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="About">About</a>
+                
+        </div>
+    </div>
+</nav>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+</script>
+
+
+
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Prediksi Gerhana Matahari Cincin 2019 Indonesia dengan Python</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="https://ubutnux.gitlab.io" rel="author">Muhammad.Yusuf</a> 
+                <span class="post-time">
+                on <time datetime=2019-03-01 itemprop="datePublished">March 1, 2019</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="https://ubutnux.gitlab.io/categories/python/"> python </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+            
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          
+
+<p>Mari kita coba memprediksi waktu dan peristiwa gerhana matahari cincin Indonesia 2019 dengan menggunakan paket astropy.</p>
+
+<h2 id="impor-semua-paket-yang-dibutuhkan">Impor semua paket yang dibutuhkan</h2>
+
+<pre><code class="language-python">import numpy as np
+
+import pytz
+import datetime
+
+from astropy import units as u
+from astropy.time import Time
+from astropy.coordinates import EarthLocation, AltAz, get_sun, get_moon
+</code></pre>
+
+<pre><code class="language-python">%matplotlib inline
+from matplotlib import pyplot as plt
+plt.style.use('ggplot')
+</code></pre>
+
+<h2 id="prediksi-untuk-daerah-siak-riau">Prediksi untuk daerah Siak, RIAU</h2>
+
+<p>Misalkan akan melakukan pengamatan di Siak, Riau. Dari kabar burung, gerhana akan terjadi pada tanggal 26 Desember 2019 pukul 12:10 WIB. Mari kita coba hitung.</p>
+
+<pre><code class="language-python">siak = EarthLocation.of_address('istana siak')
+tz = pytz.timezone('Asia/Jakarta')
+waktu_tebakan = Time(tz.localize(datetime.datetime(2019,12, 26, 12, 10, 0)))
+</code></pre>
+
+<p>Buat objek bulan dan matahari untuk lokasi dan waktu di atas</p>
+
+<pre><code class="language-python">altAzframe = AltAz(obstime=waktu_tebakan, location=siak)
+
+matahariAltAz = get_sun(waktu_tebakan).transform_to(altAzframe)
+bulanAltAz = get_moon(waktu_tebakan).transform_to(altAzframe)
+
+separasi = matahariAltAz.separation(bulanAltAz).to(u.arcmin)
+</code></pre>
+
+<p>Jarak pisah (separasi) Matahari dan Bulan $ = 3.86178\mathrm{{}^{\prime}}$. Mari kita hitung ukuran diameter sudut Matahari dan Bulan. Di dalam paket astropy sudah ada radius Matahari, tapi kita harus tetap menghitung ukuran diameter sudut bulan. Di laman <a href="https://en.wikipedia.org/wiki/Moon" rel="nofollow noreferrer" target="_blank">Wikipedia</a> kita bisa menghitung radius rata-rata Bulan.</p>
+
+<pre><code class="language-python">from astropy import constants
+
+R_matahari = constants.R_sun
+R_bulan = 1737.1 * u.km
+
+def ukuran_tampak(R, jarak):
+    return (R/jarak).to(u.arcmin, u.dimensionless_angles())
+</code></pre>
+
+<pre><code class="language-python">ukuranMatahari = ukuran_tampak(R_matahari, matahariAltAz.distance)
+</code></pre>
+
+<p>Ukuran tampak Matahari $ = 16.256114 \; \mathrm{{}^{\prime}}$.</p>
+
+<pre><code class="language-python">ukuranBulan = ukuran_tampak(R_bulan, bulanAltAz.distance)
+</code></pre>
+
+<p>Ukuran tampak Bulan $ = 15.780461 \; \mathrm{{}^{\prime}}$Plot posisi bulan dan matahari untuk lokasi dan waktu di atas</p>
+
+<pre><code class="language-python">lingkaranMatahari = plt.Circle((matahariAltAz.az.deg, matahariAltAz.alt.deg), 
+                        ukuranMatahari.to(u.deg).value,
+                        fc='yellow')
+lingkaranBulan = plt.Circle((bulanAltAz.az.deg, bulanAltAz.alt.deg), 
+                         ukuranBulan.to(u.deg).value,
+                         fc='black', alpha=.5)
+
+ax = plt.subplot(aspect=1)
+ax.add_patch(lingkaranMatahari)
+ax.add_patch(lingkaranBulan)
+jarakTerbesar = max(separasi.deg, ukuranMatahari.to(u.deg).value, ukuranBulan.to(u.deg).value)
+plt.xlim(matahariAltAz.az.deg-jarakTerbesar*1.2, bulanAltAz.az.deg+jarakTerbesar*1.2)
+plt.ylim(matahariAltAz.alt.deg-jarakTerbesar*1.2, bulanAltAz.alt.deg+jarakTerbesar*1.2)
+
+plt.xlabel('Azimut (derajat)')
+plt.ylabel('Altitud (derajat)');
+</code></pre>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/output_13_0.png" alt="Posisi Matahari dan Bulan di Siak pada pukul 12:10 WIB." class="lazyload"><figcaption class="image-caption">Posisi Matahari dan Bulan di Siak pada pukul 12:10 WIB.</figcaption></figure></p>
+
+<p>Plot di atas menunjukkan terjadinya gerhana sebagian. Sepertinya kabar burung yang sampai kurang akurat. Mari kita menghitung jarak sudut antara Matahari dan Bulan di sekitar waktu yang kita dengar. Untuk memudahkan mari kita membuat fungsi untuk menghitung posisi bulan dan matahari dan jarak separasi satu sama lain.</p>
+
+<pre><code class="language-python">def matahariBulan(waktu, lokasi):
+    altAzframe = AltAz(obstime=waktu, location=lokasi)
+    matahariAltAz = get_sun(waktu).transform_to(altAzframe)
+    bulanAltAz = get_moon(waktu).transform_to(altAzframe)
+    separasi = matahariAltAz.separation(bulanAltAz)
+    
+    return separasi, matahariAltAz, bulanAltAz
+</code></pre>
+
+<p>Kemudian coba kita plot jarak sudut Matahari dan Bulan untuk rentang waktu 100 menit sebelum dan sesudah pukul 12:10 WIB.</p>
+
+<pre><code class="language-python">rentangWaktu = waktu_tebakan + np.linspace(-100, 100, 1000)*u.min
+
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, siak)
+
+plt.figure(figsize=(15, 10))
+plt.plot_date(rentangWaktu.plot_date, separasi.arcmin, fmt='-')
+plt.axvline(waktu_tebakan.plot_date, c='k', ls='--')
+plt.ylabel('Jarak Sudut Bulan dan Matahari (menit busur)')
+plt.xlabel('Waktu(UTC)')
+</code></pre>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/output_17_1.png" alt="Jarak sudut Matahari dan Bulan di Siak terhadap waktu." class="lazyload"><figcaption class="image-caption">Jarak sudut Matahari dan Bulan di Siak terhadap waktu.</figcaption></figure></p>
+
+<p>Dari grafik di atas perkiraan waktu dari kabar burung meleset sekitar 15 menit. Kita dapat mencari minimum dari grafik di atas untuk menentukan momen puncak peristiwa gerhana.</p>
+
+<pre><code class="language-python">puncakGerhana = rentangWaktu[np.argmin(matahariAltAz.separation(bulanAltAz).arcmin)]
+</code></pre>
+
+<pre><code>    &lt;Time object: scale='utc' format='datetime' value=2019-12-26 05:24:18.858859&gt;
+</code></pre>
+
+<p>Puncak peristiwa gerhana untuk daerah di Siak adalah pukul 05:24 UTC. Mari kita plot lagi posisi Bulan dan Matahari pada waktu tersebut.</p>
+
+<pre><code class="language-python">separasi, matahariAltAz, bulanAltAz = matahariBulan(puncakGerhana, siak)
+
+lingkaranMatahari = plt.Circle((matahariAltAz.az.deg, matahariAltAz.alt.deg), 
+                        ukuranMatahari.to(u.deg).value,
+                        fc='yellow')
+lingkaranBulan = plt.Circle((bulanAltAz.az.deg, bulanAltAz.alt.deg), 
+                         ukuranBulan.to(u.deg).value,
+                         fc='black', alpha=.5)
+
+ax = plt.subplot(aspect=1)
+ax.add_patch(lingkaranMatahari)
+ax.add_patch(lingkaranBulan)
+jarakTerbesar = max(separasi.deg, ukuranMatahari.to(u.deg).value, ukuranBulan.to(u.deg).value)
+plt.xlim(matahariAltAz.az.deg-jarakTerbesar*1.2, matahariAltAz.az.deg+jarakTerbesar*1.2)
+plt.ylim(matahariAltAz.alt.deg-jarakTerbesar*1.2, matahariAltAz.alt.deg+jarakTerbesar*1.2)
+
+plt.xlabel('Azimut (derajat)')
+plt.ylabel('Altitud (derajat)')
+</code></pre>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/output_21_1.png" alt="Posisi Matahari dan Bulan di Siak pada pukul 12:24 WIB" class="lazyload"><figcaption class="image-caption">Posisi Matahari dan Bulan di Siak pada pukul 12:24 WIB</figcaption></figure></p>
+
+<p>Yay!!!!!! Ternyata di daerah tersebut memang terjadi gerhana matahari cincin, tapi bulannya tidak tepat di tengah matahari. Mari kita cari lokasi lain.</p>
+
+<h2 id="pulau-penyengat">Pulau Penyengat</h2>
+
+<p>Menurut Bu Wiwin, ada pulau yang sudah disurvei dan akan dilewati puncak gerhana. Mari kita hitung dengan menggunakan cara yang sama.</p>
+
+<pre><code class="language-python">penyengat  = EarthLocation.of_address('pulau penyengat')
+</code></pre>
+
+<pre><code class="language-python">penyengat  = EarthLocation.of_address('pulau penyengat')
+rentangWaktu = waktu_tebakan + np.linspace(-100, 100, 1000)*u.min
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, penyengat)
+
+puncakGerhana = rentangWaktu[np.argmin(matahariAltAz.separation(bulanAltAz).arcmin)]
+separasi, matahariAltAz, bulanAltAz = matahariBulan(puncakGerhana, penyengat)
+
+lingkaranMatahari = plt.Circle((matahariAltAz.az.deg, matahariAltAz.alt.deg), 
+                        ukuranMatahari.to(u.deg).value,
+                        fc='yellow')
+lingkaranBulan = plt.Circle((bulanAltAz.az.deg, bulanAltAz.alt.deg), 
+                         ukuranBulan.to(u.deg).value,
+                         fc='black', alpha=.5)
+
+ax = plt.subplot(aspect=1)
+ax.add_patch(lingkaranMatahari)
+ax.add_patch(lingkaranBulan)
+jarakTerbesar = max(separasi.deg, ukuranMatahari.to(u.deg).value, ukuranBulan.to(u.deg).value)
+plt.xlim(matahariAltAz.az.deg-jarakTerbesar*1.2, matahariAltAz.az.deg+jarakTerbesar*1.2)
+plt.ylim(matahariAltAz.alt.deg-jarakTerbesar*1.2, matahariAltAz.alt.deg+jarakTerbesar*1.2)
+
+plt.xlabel('Azimut (derajat)')
+plt.ylabel('Altitud (derajat)')
+</code></pre>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/output_26_1.png" alt="Posisi Bulan dan Matahari pada peristiwa puncak gerhana di Pulau Siak" class="lazyload"><figcaption class="image-caption">Posisi Bulan dan Matahari pada peristiwa puncak gerhana di Pulau Siak</figcaption></figure></p>
+
+<p>Pas!!! Pulau penyengat dapat gambar cincin ketika puncak gerhana. Mari mencari waktu awal dan akhir peristiwa gerhana matahari cincin pada lokasi ini.</p>
+
+<pre><code class="language-python">rentangWaktu = puncakGerhana + np.linspace(-60, 60, 100)*u.min
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, penyengat)
+waktu_tebakan = rentangWaktu[np.argmin(separasi)]
+rentangWaktu = waktu_tebakan + np.linspace(-5, 5, 500)*u.min
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, penyengat)
+
+</code></pre>
+
+<pre><code class="language-python">sep = separasi
+puncakGerhana = rentangWaktu[np.argmin(matahariAltAz.separation(bulanAltAz).arcmin)]
+
+ukuranBulan = ukuran_tampak(R_bulan, bulanAltAz.distance)
+ukuraMatahari = ukuran_tampak(R_matahari, matahariAltAz.distance)
+
+cincin = sep &lt; (ukuranMatahari - ukuranBulan)
+sebagian = sep &lt; (ukuranMatahari + ukuranBulan)
+
+plt.figure(figsize=(10, 8))
+plt.axvline(puncakGerhana.plot_date, c='k', ls='--')
+plt.axvspan(rentangWaktu.plot_date[cincin].min(), rentangWaktu.plot_date[cincin].max(), color='red', alpha=0.3)
+plt.plot_date(rentangWaktu.plot_date, sep.arcmin, fmt='-', c='k')
+plt.plot_date(rentangWaktu.plot_date[sebagian], sep.arcmin[sebagian], fmt='-')
+plt.plot_date(rentangWaktu.plot_date[cincin], sep.arcmin[cincin], fmt='-', color='white')
+plt.text(rentangWaktu.plot_date[cincin].min()-0.0008, 0.4, np.min(rentangWaktu[cincin]).strftime('%H:%M:%S'))
+plt.text(rentangWaktu.plot_date[cincin].max()+0.0001, 0.4, np.max(rentangWaktu[cincin]).strftime('%H:%M:%S'))
+plt.text(puncakGerhana.plot_date-0.0003, 0.05, puncakGerhana.strftime('%H:%M:%S'))
+plt.ylabel('Jarak Sudut Bulan dan Matahari (menit busur)')
+plt.xlabel('Waktu (UTC)')
+plt.ylim(0, sep.arcmin[-1])
+</code></pre>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/output_31_1.png" alt="Jarak sudut Matahari dan Bulan untuk pulau Penyengat" class="lazyload"><figcaption class="image-caption">Jarak sudut Matahari dan Bulan untuk pulau Penyengat</figcaption></figure></p>
+
+<p>Daerah yang diarsir adalah waktu ketika terjadi fase gerhana matahari cincin. Berapa lama durasi fase gerhana cincin tersebut?</p>
+
+<pre><code class="language-python">(np.max(rentangWaktu[cincin])-np.min(rentangWaktu[cincin])).to(u.min)
+</code></pre>
+
+<p>Dari perhitungan, durasinya adalah $ = 3.4268537$ menit.</p>
+
+<h2 id="observatorium-bosscha-lembang">Observatorium Bosscha, Lembang</h2>
+
+<p>Bagaimana dengan Observatorium Bosscha di Lembang?</p>
+
+<pre><code class="language-python">bosscha = EarthLocation.of_address('Bosscha Observatory')
+</code></pre>
+
+<pre><code class="language-python">rentangWaktu = puncakGerhana + np.linspace(-120, 120, 100)*u.min
+
+separasi, matahariAltAz, bulanAltAz = matahariBulan(rentangWaktu, bosscha)
+
+plt.figure(figsize=(15, 10))
+plt.plot_date(rentangWaktu.plot_date, separasi.arcmin, fmt='-')
+plt.axvline(waktu_tebakan.plot_date, c='k', ls='--')
+plt.ylabel('Jarak Sudut Bulan dan Matahari (menit busur)');
+</code></pre>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/output_38_0.png" alt="Jarak sudut Matahari dan Bulan di Observatorium Bosscha" class="lazyload"><figcaption class="image-caption">Jarak sudut Matahari dan Bulan di Observatorium Bosscha</figcaption></figure></p>
+
+<p>Apakah akan terjadi gerhana matahari cincin di waktu puncak gerhana di Observatorium Bosscha?</p>
+
+<pre><code class="language-python">waktu_tebakan = rentangWaktu[np.argmin(separasi)]
+rentangWaktu = waktu_tebakan + np.linspace(-5, 5, 500)*u.min
+separasi = matahariBulan(rentangWaktu, bosscha)[0]
+puncakGerhana = rentangWaktu[np.argmin(separasi)]
+
+separasi, matahariAltAz, bulanAltAz = matahariBulan(puncakGerhana, bosscha)
+
+ukuraMatahari = ukuran_tampak(R_matahari, matahariAltAz.distance)
+ukuranBulan = ukuran_tampak(R_bulan, bulanAltAz.distance)
+
+lingkaranMatahari = plt.Circle((matahariAltAz.az.deg, matahariAltAz.alt.deg), 
+                        ukuranMatahari.to(u.deg).value,
+                        fc='yellow')
+lingkaranBulan = plt.Circle((bulanAltAz.az.deg, bulanAltAz.alt.deg), 
+                         ukuranBulan.to(u.deg).value,
+                         fc='black', alpha=.5)
+
+ax = plt.subplot(aspect=1)
+ax.add_patch(lingkaranMatahari)
+ax.add_patch(lingkaranBulan)
+jarakTerbesar = max(separasi.deg, ukuranMatahari.to(u.deg).value, ukuranBulan.to(u.deg).value)
+plt.xlim(matahariAltAz.az.deg-jarakTerbesar*1.2, bulanAltAz.az.deg+jarakTerbesar*1.2)
+plt.ylim(matahariAltAz.alt.deg-jarakTerbesar*1.2, bulanAltAz.alt.deg+jarakTerbesar*1.2)
+
+plt.xlabel('Azimut (derajat)')
+plt.ylabel('Altitud (derajat)')
+
+maxdt = pytz.utc.localize(puncakGerhana.datetime).astimezone(tz)
+
+plt.title('{0:%H}:{0:%M}:{0:%S} {1}'.format(maxdt, maxdt.tzinfo.tzname(maxdt)));
+</code></pre>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/output_40_0.png" alt="Posisi Matahari dan Bulan pada fase puncak di Observatorium Bosscha" class="lazyload"><figcaption class="image-caption">Posisi Matahari dan Bulan pada fase puncak di Observatorium Bosscha</figcaption></figure></p>
+
+<p>Sayang sekali ternyata Observatorium Bosscha hanya dapat mengamati gerhana matahari sebagian.</p>
+
+<p>Di Observatorium Bosscha banyak pohon. Apakah ketika puncak gerhana sebagian terjadi medan pandang kita tidak terhalang pohon? Asumsi tinggi rata-rata pohon 30 meter.</p>
+
+<pre><code class="language-python">30*u.m/np.tan(matahariAltAz.alt)
+</code></pre>
+
+<p>Jarak minimum = $11.204875 \; \mathrm{m}$. Selama pengamat berjarak 12 meter dari pohon, pandangan akan bebas.</p>
+
+<p>Metode di atas dapat digunakan untuk memprediksi peristiwa gerhana di daerah dan waktu yang lain. Happy coding.</p>
+
+<p><em>Terinspirasi dari <a href="https://gist.github.com/eteq/f879c2fe69d75d1c5a9e007b0adce30d" rel="nofollow noreferrer" target="_blank">hitungan</a> gerhana matahari puncak di Amerika tahun 2017 oleh <a href="https://github.com/eteq" rel="nofollow noreferrer" target="_blank">Erik Tollerud</a> si empunya proyek astropy.</em></p>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Muhammad.Yusuf </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/>https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/</span>
+            </p>
+            
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="https://ubutnux.gitlab.io/tags/python/">
+                    #python</a></span>
+            
+            <span class="tag"><a href="https://ubutnux.gitlab.io/tags/astronomi/">
+                    #astronomi</a></span>
+            
+            <span class="tag"><a href="https://ubutnux.gitlab.io/tags/astropy/">
+                    #astropy</a></span>
+            
+            <span class="tag"><a href="https://ubutnux.gitlab.io/tags/gerhana/">
+                    #gerhana</a></span>
+            
+            <span class="tag"><a href="https://ubutnux.gitlab.io/tags/gmc2019/">
+                    #gmc2019</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="https://ubutnux.gitlab.io">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+         
+        
+        <a href="https://ubutnux.gitlab.io/2019/2019-03-11-prediksi-terbenam-dengan-python/" class="next" rel="next" title="Prediksi Waktu Matahari dan Bulan Terbenam dengan Python">Prediksi Waktu Matahari dan Bulan Terbenam dengan Python&nbsp;<i class="iconfont icon-right"></i></a>
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2018 - 2019</span>
+        
+        <span class="with-love">
+	|
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="https://ubutnux.gitlab.io">Muhammad.Yusuf</a> </span> 
+         
+
+         
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+     <link href="//lib.baomitu.com/lightgallery/1.6.11/css/lightgallery.min.css" rel="stylesheet">  
+      
+     <script src="/js/vendor_gallery.min.js" async="" ></script>
+    
+  
+
+
+
+
+     </div>
+  </body>
+</html>

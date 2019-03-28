@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hilal on ubutnux.gitlab.io</title>
+    <link>https://ubutnux.gitlab.io/tagar/hilal/</link>
+    <description>Recent content in hilal on ubutnux.gitlab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://ubutnux.gitlab.io/tagar/hilal/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Prediksi Posisi Hilal dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-12-prediksi-hilal-dengan-python/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-12-prediksi-hilal-dengan-python/</guid>
+      <description>Impor semua paket yang dibutuhkan from skyfield import api from skyfield import almanac from skyfield.nutationlib import iau2000b from skyfield.units import Angle from datetime import timedelta import astropy.units as u from datetime import datetime from pytz import timezone  Buat timescale dan unduh ephemeris. Kita akan menggunakan ephemeris dari JPL NASA versi de421.bsp.
+timescale = api.load.timescale() ephemeris = api.load(&#39;de421.bsp&#39;)  Tentukan koodinat di permukaan Bumi di mana prediksi akan dilakukan, sebagai contoh kita gunakan Observatorium Bosscha.</description>
+    </item>
+    
+  </channel>
+</rss>

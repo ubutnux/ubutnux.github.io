@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tagar on ubutnux.gitlab.io</title>
+    <link>https://ubutnux.gitlab.io/tagar/</link>
+    <description>Recent content in Tagar on ubutnux.gitlab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://ubutnux.gitlab.io/tagar/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>astronomi</title>
+      <link>https://ubutnux.gitlab.io/tagar/astronomi/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/tagar/astronomi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>astropy</title>
+      <link>https://ubutnux.gitlab.io/tagar/astropy/</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/tagar/astropy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gerhana</title>
+      <link>https://ubutnux.gitlab.io/tagar/gerhana/</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/tagar/gerhana/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gmc2019</title>
+      <link>https://ubutnux.gitlab.io/tagar/gmc2019/</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/tagar/gmc2019/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hilal</title>
+      <link>https://ubutnux.gitlab.io/tagar/hilal/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/tagar/hilal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>moonset</title>
+      <link>https://ubutnux.gitlab.io/tagar/moonset/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/tagar/moonset/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://ubutnux.gitlab.io/tagar/python/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/tagar/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>skyfield</title>
+      <link>https://ubutnux.gitlab.io/tagar/skyfield/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/tagar/skyfield/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sunset</title>
+      <link>https://ubutnux.gitlab.io/tagar/sunset/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/tagar/sunset/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python on ubutnux.gitlab.io</title>
+    <link>https://ubutnux.gitlab.io/tagar/python/</link>
+    <description>Recent content in python on ubutnux.gitlab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://ubutnux.gitlab.io/tagar/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Prediksi Posisi Hilal dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-12-prediksi-hilal-dengan-python/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-12-prediksi-hilal-dengan-python/</guid>
+      <description>Impor semua paket yang dibutuhkan from skyfield import api from skyfield import almanac from skyfield.nutationlib import iau2000b from skyfield.units import Angle from datetime import timedelta import astropy.units as u from datetime import datetime from pytz import timezone  Buat timescale dan unduh ephemeris. Kita akan menggunakan ephemeris dari JPL NASA versi de421.bsp.
+timescale = api.load.timescale() ephemeris = api.load(&#39;de421.bsp&#39;)  Tentukan koodinat di permukaan Bumi di mana prediksi akan dilakukan, sebagai contoh kita gunakan Observatorium Bosscha.</description>
+    </item>
+    
+    <item>
+      <title>Prediksi Waktu Matahari dan Bulan Terbenam dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-11-prediksi-terbenam-dengan-python/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-11-prediksi-terbenam-dengan-python/</guid>
+      <description>Impor semua paket yang dibutuhkan from skyfield import api from skyfield import almanac from skyfield.nutationlib import iau2000b  Buat timescale dan unduh ephemeris. Kita akan menggunakan ephemeris dari JPL NASA versi de421.bsp.
+timescale = api.load.timescale() ephemeris = api.load(&#39;de421.bsp&#39;)  Tentukan koodinat di permukaan Bumi di mana prediksi akan dilakukan, sebagai contoh kita gunakan Observatorium Bosscha. Koodinat yang digunakan dalam derajat.
+# Observatorium Bosscha 107:37:00 BT; -6:49:50 LS longitude = 107 + 37/60 latitude = -(6 + 49/60 + 50/3600)  Perhitungan posisi Bulan dan Matahari bergantung pada posisi pengamat di Bumi.</description>
+    </item>
+    
+    <item>
+      <title>Prediksi Gerhana Matahari Cincin 2019 Indonesia dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-01-gerhana-matahari-cincin-2019/</guid>
+      <description>Mari kita coba memprediksi waktu dan peristiwa gerhana matahari cincin Indonesia 2019 dengan menggunakan paket astropy.
+Impor semua paket yang dibutuhkan import numpy as np import pytz import datetime from astropy import units as u from astropy.time import Time from astropy.coordinates import EarthLocation, AltAz, get_sun, get_moon  %matplotlib inline from matplotlib import pyplot as plt plt.style.use(&#39;ggplot&#39;)  Prediksi untuk daerah Siak, RIAU Misalkan akan melakukan pengamatan di Siak, Riau. Dari kabar burung, gerhana akan terjadi pada tanggal 26 Desember 2019 pukul 12:10 WIB.</description>
+    </item>
+    
+  </channel>
+</rss>

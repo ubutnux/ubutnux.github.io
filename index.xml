@@ -850,11 +850,11 @@ plt.title(&#39;{0:%H}:{0:%M}:{0:%S} {1}&#39;.format(maxdt, maxdt.tzinfo.tzname(m
     </item>
     
     <item>
-      <title>About</title>
-      <link>https://ubutnux.gitlab.io/about/</link>
+      <title>Tentang Saya</title>
+      <link>https://ubutnux.gitlab.io/tentang/</link>
       <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://ubutnux.gitlab.io/about/</guid>
+      <guid>https://ubutnux.gitlab.io/tentang/</guid>
       <description>
 
 &lt;p&gt;Astronom di Observatorium Bosscha&lt;/p&gt;

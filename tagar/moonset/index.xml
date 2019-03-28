@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>moonset on ubutnux.gitlab.io</title>
+    <link>https://ubutnux.gitlab.io/tagar/moonset/</link>
+    <description>Recent content in moonset on ubutnux.gitlab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://ubutnux.gitlab.io/tagar/moonset/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Prediksi Posisi Hilal dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-12-prediksi-hilal-dengan-python/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-12-prediksi-hilal-dengan-python/</guid>
+      <description>Impor semua paket yang dibutuhkan from skyfield import api from skyfield import almanac from skyfield.nutationlib import iau2000b from skyfield.units import Angle from datetime import timedelta import astropy.units as u from datetime import datetime from pytz import timezone  Buat timescale dan unduh ephemeris. Kita akan menggunakan ephemeris dari JPL NASA versi de421.bsp.
+timescale = api.load.timescale() ephemeris = api.load(&#39;de421.bsp&#39;)  Tentukan koodinat di permukaan Bumi di mana prediksi akan dilakukan, sebagai contoh kita gunakan Observatorium Bosscha.</description>
+    </item>
+    
+    <item>
+      <title>Prediksi Waktu Matahari dan Bulan Terbenam dengan Python</title>
+      <link>https://ubutnux.gitlab.io/2019/2019-03-11-prediksi-terbenam-dengan-python/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://ubutnux.gitlab.io/2019/2019-03-11-prediksi-terbenam-dengan-python/</guid>
+      <description>Impor semua paket yang dibutuhkan from skyfield import api from skyfield import almanac from skyfield.nutationlib import iau2000b  Buat timescale dan unduh ephemeris. Kita akan menggunakan ephemeris dari JPL NASA versi de421.bsp.
+timescale = api.load.timescale() ephemeris = api.load(&#39;de421.bsp&#39;)  Tentukan koodinat di permukaan Bumi di mana prediksi akan dilakukan, sebagai contoh kita gunakan Observatorium Bosscha. Koodinat yang digunakan dalam derajat.
+# Observatorium Bosscha 107:37:00 BT; -6:49:50 LS longitude = 107 + 37/60 latitude = -(6 + 49/60 + 50/3600)  Perhitungan posisi Bulan dan Matahari bergantung pada posisi pengamat di Bumi.</description>
+    </item>
+    
+  </channel>
+</rss>
